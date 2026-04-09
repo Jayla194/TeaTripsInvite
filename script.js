@@ -1,5 +1,6 @@
-const banner = document.getElementById('readBanner');
-    const faqSection = document.querySelector('#faq') || document.querySelector('.faq-list');
+// Read-first banner
+    const banner = document.getElementById('readBanner');
+    const faqSection = document.getElementById('faq-section');
  
     function dismissBanner() {
       banner.classList.add('hidden');
@@ -10,13 +11,12 @@ const banner = document.getElementById('readBanner');
     if (faqSection) {
       const faqObserver = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          // Hide once the bottom of the FAQ has passed the viewport
-          if (e.boundingClientRect.bottom < window.innerHeight) {
+          if (e.isIntersecting) {
             dismissBanner();
             faqObserver.disconnect();
           }
         });
-      }, { threshold: 1.0 });
+      }, { threshold: 0.3 });
       faqObserver.observe(faqSection);
     }
  
@@ -34,11 +34,8 @@ const banner = document.getElementById('readBanner');
       });
     });
  
-    // Scroll reveal
-    const revealEls = document.querySelectorAll(
-      '.hero-inner, .card, .step, .panel, .faq-item, .cta-card, .launch-card, .section-header, .notice-card, .note-callout'
-    );
-    revealEls.forEach(el => el.classList.add('reveal'));
+    // Scroll reveal -- only add class to elements that don't already have it
+    const revealEls = document.querySelectorAll('.reveal');
  
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
